@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import type { AccountSummary, OpenPosition } from './types';
+import { cookies } from 'next/headers';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
@@ -25,21 +26,25 @@ export async function login(prevState: any, formData: FormData) {
   //
   // Example:
   // const { email, password, brokerId } = validatedFields.data;
-  // const response = await fetch('https://api.match-trade.com/v2/auth', {
+  // const tradingApiToken = process.env.TRADING_API_TOKEN; // Example of getting a token from env vars
+  // 
+  // const response = await fetch('https://api.your-broker.com/auth', {
   //   method: 'POST',
   //   headers: { 
   //     'Content-Type': 'application/json',
-  //     // Add any necessary API keys here, preferably from environment variables.
-  //     'X-API-KEY': process.env.MATCH_TRADE_API_KEY
+  //     'Auth-trading-api': `${tradingApiToken}`,
   //   },
   //   body: JSON.stringify({ email, password, brokerId }),
   // });
   //
   // if (response.ok) {
-  //   const user = await response.json();
-  //   // If authentication is successful, you would typically create a session
-  //   // or set a secure, HTTP-only cookie to maintain the user's logged-in state.
-  //   // cookies().set('session', user.token, { secure: true, httpOnly: true });
+  //   const authData = await response.json();
+  //   // Assuming the response contains a session token
+  //   const token = authData.token;
+  //
+  //   // Set the session token in a secure, HTTP-only cookie
+  //   cookies().set('co-auth', token, { secure: true, httpOnly: true, sameSite: 'strict' });
+  //   
   //   redirect('/dashboard');
   // } else {
   //   return { message: 'Login failed. Please check your credentials.' };
@@ -53,6 +58,19 @@ export async function getAccountSummary(): Promise<AccountSummary> {
   // SECURE API INTEGRATION POINT
   // This is where you would fetch account summary data from the Match-Trade API.
   // You would need the user's authentication token from their session to make this request.
+  //
+  // Example using the session cookie:
+  // const token = cookies().get('co-auth')?.value;
+  // if (!token) { throw new Error('Not authenticated'); }
+  //
+  // const response = await fetch('https://api.your-broker.com/account/summary', {
+  //   headers: {
+  //     'Cookie': `co-auth=${token}`
+  //   }
+  // });
+  // const data = await response.json();
+  // return data;
+
 
   // For this demo, we return mock data.
   return {
@@ -68,13 +86,16 @@ export async function getAccountSummary(): Promise<AccountSummary> {
 export async function getOpenPositions(): Promise<OpenPosition[]> {
   // SECURE API INTEGRATION POINT
   // Here you would make the API call to the Match-Trade API endpoint to fetch open positions.
-  // The documentation suggests a POST request to `/position/open-position`.
   //
-  // const response = await fetch('https://api.match-trade.com/v2/position/open-position', {
+  // Example using the session cookie:
+  // const token = cookies().get('co-auth')?.value;
+  // if (!token) { throw new Error('Not authenticated'); }
+  //
+  // const response = await fetch('https://api.your-broker.com/positions/open', {
   //   method: 'POST',
   //   headers: {
   //     'Content-Type': 'application/json',
-  //     'Authorization': `Bearer ${sessionToken}` // Use the token from the user's session
+  //     'Cookie': `co-auth=${token}`
   //   },
   //   body: JSON.stringify({ /* any required parameters */ })
   // });
