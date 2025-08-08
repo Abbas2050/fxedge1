@@ -25,7 +25,7 @@ export default async function DashboardPage() {
           <SidebarHeader className="p-4">
             <div className="flex items-center gap-3">
               <BarChart3 className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold">Trade Vision</h1>
+              <h1 className="text-2xl font-bold">Sky Links Capital</h1>
             </div>
           </SidebarHeader>
           <SidebarContent className="p-2">

@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Trade Vision',
+  title: 'Sky Links Capital',
   description: 'A futuristic trading dashboard to visualize your open positions and account status.',
 };
 
